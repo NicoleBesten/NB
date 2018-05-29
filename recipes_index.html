@@ -1,0 +1,102 @@
+<head>
+  <title>EASY DINNER</title>
+</head>
+
+<body>
+{{> recipe_add_form}}
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">EASY DINNER</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">ALL RECIPES</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-center">
+        <li><span class="glyphicon glyphicon-user"></span>{{> loginButtons}}</li>
+	</ul>
+  </div>
+</nav>
+
+  <div class="container js-container" >
+
+    <h1>Welcome to Easy Dinner {{username}}!</h1>
+    <h3>Choose your favorite recipes or upload your own!</h3>
+
+    {{> recipes}} 
+</div>
+</body>
+
+<template name="recipe_add_form">
+
+<div class="modal fade" id="recipe_add_form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">
+        </div>
+      </div>
+      <div class="modal-body">       
+        <form class="js-add-recipe">
+          <div class="form-group">
+            <label for="img_src">Recipe URL:</label>
+            <input type="text" class="form-control" id="img_src" placeholder="url" name="img_src"/>
+        </div>
+        <div class="form-group">
+        <label for="recipe_name">Title recipe:</label>
+          <textarea class="form-control" id="recipe_name" placeholder="Title of the recipe" name="recipe_name"></textarea>
+          <br>
+         <label for="recipe_ingredients">Ingredients recipe:</label>
+          <textarea class="form-control" id="recipe_ingredients" placeholder="Describe the ingredients here" name="recipe_ingredients"></textarea>
+          <br>
+          <label for="img_alt">How to make the recipe:</label>
+          <textarea class="form-control" id="img_alt" placeholder="Describe the recipe here" name="img_alt"></textarea>
+        </div>
+          <button class="btn btn-success">save</button>
+        </form> 
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-warning" data-dismiss="modal">cancel</button>
+      </div>  
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="recipes">
+  {{#if currentUser}}
+  <button class="btn btn-success js-show-recipe-form">add image</button>
+  {{/if}}
+   <h2>
+   {{#if filtering_images}}
+    Showing recipes by user {{getFilterUser}}. <a href="#" class="js-unset-recipe-filter">Show all recipes</a>
+   {{/if}}
+  </h2>
+	<div class="row">
+  {{#each recipes}}
+  <div class="col-xs-12 col-md-3" id="{{_id}}">
+  	<div class="thumbnail">
+
+  	 	<img class="js-recipe thumbnail-img"  src="{{img_src}}" 
+  		alt="{{img_alt}}" /> 
+  			
+  		<div class="caption"> 
+  		<h3> {{recipe_name}}</h3>		
+             	<h3>{{rating}}</h3>
+          <p>
+            User: 
+            <a href="#" class="js-set-recipe-filter">{{getUser createdBy}}</a>
+          </p>
+          <p>
+            {{>starsRating mutable=true class="js-rate-recipe" data_id=_id rating=rating}}
+          </p>
+
+           <button class="js-del-recipe btn btn-warning">delete</button>
+     	<button class="js-meer-recipe btn btn-success">More info</button>
+      </div>
+     </div>
+    </div> <!-- / col -->
+  {{/each}}
+</div> <!-- / row -->
+  </template>
